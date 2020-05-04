@@ -6,74 +6,28 @@ from scipy.stats import mode
 
 #Code for categorical variable
 def categorical(df):
-    """ Extract names of categorical column
-    
-    This function accepts a dataframe and returns categorical list,
-    containing the names of categorical columns(categorical_var).
-    
-    Keyword arguments:
-    df - Pandas dataframe from which the columns name will be extracted
-        
-    Returns:
-    categorical_var - List of categorical features
-    """
+    """ Extract names of categorical column"""
     categorical_var= df.select_dtypes(include='object').columns.tolist()
     return categorical_var
 
 
 #Code for numerical variable
 def numerical(df):
-    """ Extract names of numerical column
-    
-    This function accepts a dataframe and returns numerical list,
-    containing the names of numerical columns(numerical_var).
-        
-    Keyword arguments:
-    df - Pandas dataframe from which the columns name will be extracted
-    
-    Returns:
-    numerical_var - List of numerical features
-    """
+    """ Extract names of numerical column"""
     numerical_var = df.select_dtypes(include='number').columns.tolist()
     return numerical_var
 
 
 #code to check distribution of variable
 def clear(df,col,val):
-    """ Check distribution of variable
-    
-    This function accepts a dataframe,column(feature) and value which returns count of the value,
-    containing the value counts of a variable(value_counts)
-    
-    Keyword arguments:
-    df - Pandas dataframe
-    col - Feature of the datagrame
-    val - value of the feature
-    
-    Returns:
-    value_counts - Value count of the feature 
-    """
+    """ Check distribution of variable  """
     value_counts = df[col].value_counts()[val]
     return value_counts
 
 
 #Code to check instances based on the condition
 def instances_based_condition(df,col1,val1,col2,val2):
-    """ Instances based on the condition
-    
-    This function accepts a dataframe, 2 columns(feature) and 2 values which returns the dataframe
-    based on the condition.
-    
-    Keyword arguments:
-    df - Pandas dataframe which has the data.
-    col1 - First feature of the dataframe on which you want to apply the filter
-    val1 - Value to be filtered on the first feature
-    col2 - Second feature of the dataframe on which you want to apply the filter
-    val2 - Value to be filtered on second feature
-    
-    Returns:
-    instance - Generated dataframe
-    """
+    """ Instances based on the condition"""
     
     instance = df[(df[col1] > val1) & (df[col2]== val2)]
     return instance
@@ -82,20 +36,7 @@ def instances_based_condition(df,col1,val1,col2,val2):
 # Code to calculate different aggreagted values according to month
 
 def agg_values_ina_month(df,date_col,agg_col, agg):
-    """  Aggregate values according to month
-    
-    This function accepts a dataframe, 2 columns(feature) and aggregated funcion(agg) which returns the Pivot 
-    table with different aggregated value of the feature with an index of the month.
-     
-    Keyword arguments:
-    df - Pandas dataframe which has the data.
-    date_col - Date feature of the dataframe on which you want to apply to_datetime conversion
-    agg_col - Feature of the dataframe on which values will be aggregated.
-    agg - Dictionary of aggregate functions with feature as the key and func as the value
-    
-    Returns:
-    aggregated_value - Generated pivot table
-    """
+    """  Aggregate values according to month """
     df[date_col] = pd.to_datetime(df[date_col])
     aggregate = {'mean':np.mean,'max':np.max,'min':np.min,'sum':np.sum,'len':len}
     aggregated_value = df.pivot_table(values=[agg_col], index=df[date_col].dt.month,aggfunc={agg_col:aggregate[agg]})
@@ -104,20 +45,6 @@ def agg_values_ina_month(df,date_col,agg_col, agg):
 
 # Code to group values based on the feature
 def group_values(df,col1,agg1):
-    """ Agrregate values by grouping
-    
-    This function accepts a dataframe, 1 column(feature) and aggregated function(agg1) which groupby the datframe based on the column.
-    
-    
-    Keyword arguments:
-    df - Pandas dataframe which has the data.
-    col1 - Feature of the dataframe on which values will be aggregated.
-    agg1 - Dictionary of aggregate functions with feature as the key and func as the value
-    
-    Returns:
-    grouping - Dataframe with all columns on which it is grouped on.
-    """
-    
     aggregate = {'mean':np.mean,'max':np.max,'min':np.min,'sum':np.sum,'len':len}
     grouping = df.groupby(col1).agg(aggregate[agg1])
     return grouping
@@ -125,19 +52,6 @@ def group_values(df,col1,agg1):
 
 # function for conversion 
 def convert(df,celsius):
-    """ Convert temperatures from celsius to fahrenhheit
-    
-    This function accepts a dataframe, 1 column(feature) which returns the dataframe with converted values from 
-    celsius to fahrenhheit.
-         
-    Keyword arguments:
-    df - Pandas dataframe which has the data.
-    celsius - Temperature feature of the dataframe which you want to convert to fahrenhheit
-    
-    Returns:
-    converted_temp - Generated dataframe with Fahrenhheit temp.
-    
-    """
     centigrade_temps = df[celsius]
     converted_temp =  1.8*centigrade_temps + 32
     return converted_temp
